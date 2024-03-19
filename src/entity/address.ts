@@ -1,7 +1,11 @@
-import { Entity, Column } from "typeorm"
+import { Entity, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm"
+import { Customer } from "./customer"
 
 @Entity()
 export class Address{
+
+    @PrimaryGeneratedColumn()
+    id!: number
 
     @Column()
     addressLine!: string
@@ -14,4 +18,8 @@ export class Address{
 
     @Column()
     cityCode!: string
+
+    @ManyToOne(() => Customer, customer => customer.addresses)
+    @JoinColumn({ name: "customer_id"})
+    customer: Customer;
 }

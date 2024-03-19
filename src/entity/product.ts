@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm"
 import { Address } from "./address"
+import { Order } from "./order"
 
 @Entity()
-export class Customer{
+export class Product{
 
     @PrimaryGeneratedColumn()
     id!: string
@@ -19,6 +20,6 @@ export class Customer{
     @Column()
     updatedAt!: Date
 
-    @OneToMany(() => Address, address => address.customer)
-    addresses: Address[];
+    @ManyToOne(() => Order, order => order.products)
+    orders: Order[];
 }
