@@ -1,8 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
 import { Address } from "./address"
+import { Product } from "./product"
 
 @Entity()
-export class Customer{
+export class Order{
 
     @PrimaryGeneratedColumn()
     id!: string
@@ -19,6 +20,6 @@ export class Customer{
     @Column()
     updatedAt!: Date
 
-    @OneToMany(() => Address, address => address.customer)
-    addresses: Address[];
+    @OneToMany(() => Product, product => product.orders)
+    products: Product[];
 }
