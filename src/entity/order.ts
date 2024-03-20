@@ -1,18 +1,22 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from "typeorm"
 import { Address } from "./address"
 import { Product } from "./product"
+import { Customer } from "./customer"
 
 @Entity()
-export class Order{
+export class Order {
 
     @PrimaryGeneratedColumn()
-    id!: string
+    id!: number
 
     @Column()
-    name!: string
+    quantity!: number
 
     @Column()
-    email!: string
+    price!: number
+
+    @Column()
+    status!: string
 
     @Column()
     createdAt!: Date
@@ -20,6 +24,15 @@ export class Order{
     @Column()
     updatedAt!: Date
 
-    @OneToMany(() => Product, product => product.orders)
-    products: Product[];
+    @ManyToOne(() => Order, order => order.products)
+    @JoinColumn({ name: "product_id" })
+    products: Product;
+
+    @ManyToOne(() => Address, address => address.orders)
+    @JoinColumn({ name: "address_id" })
+    address: Address;
+
+    @ManyToOne(() => Customer, customer => customer.orders)
+    @JoinColumn({ name: "customer_id" })
+    customer: Customer;
 }
