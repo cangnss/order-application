@@ -6,7 +6,7 @@ import { Order } from "./order"
 export class Product {
 
     @PrimaryGeneratedColumn()
-    id!: string
+    id!: number
 
     @Column()
     imageUrl!: string
