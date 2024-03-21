@@ -38,4 +38,13 @@ export const checkProductId = (req: Request, res: Response, next: NextFunction) 
   next();
 };
 
+export const checkOrderId = (req: Request, res: Response, next: NextFunction) => {
+  const { orderId } = req.params;
+  const convertedId = parseInt(orderId);
+  if (!orderId || isNaN(convertedId)) {
+    return res.status(400).json({ error: 'Invalid orderId' });
+  }
+  next();
+};
+
 
