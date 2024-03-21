@@ -8,47 +8,62 @@ export class CustomerController {
     getAllCustomers = async (req: Request, res: Response) => {
         try {
             const customers = await this.customerRepository.find();
-            return res.status(200).send(customers)
+            return res.status(200).send({ success: true, data: customers })
         } catch (error) {
             console.log("GetAllCustomers Error: ", error)
+            return res.status(500).send({ success: false, message: "GetAllCustomers Error!" })
         }
     }
 
     addCustomer = async (req: Request, res: Response) => {
-        const { name, email } = await req.body;
+        try {
+            const { name, email } = await req.body;
 
-        const customer = new Customer();
-        customer.name = name;
-        customer.email = email;
-        customer.createdAt = new Date()
-        customer.updatedAt = new Date()
+            const customer = new Customer();
+            customer.name = name;
+            customer.email = email;
+            customer.createdAt = new Date()
+            customer.updatedAt = new Date()
 
-        await this.customerRepository.save(customer);
-        res.status(201).send({ success: true, message: "Customer is added!"})
+            await this.customerRepository.save(customer);
+            res.status(201).send({ success: true, message: "Customer is added!" })
+        } catch (error) {
+            return res.status(500).send({ success: false, message: "Add customer endpoint error!" })
+        }
     }
 
     updateCustomer = async (req: Request, res: Response) => {
-        const { name, email } = req.body
-        const customer = await this.customerRepository.findOneBy({ id: parseInt(req.params.customerId) })
+        try {
+            const { name, email } = req.body
+            const customer = await this.customerRepository.findOneBy({ id: parseInt(req.params.customerId) })
 
-        if (customer == null) {
-            res.status(404).send({ success:false, message: "Customer not found!"})
-        }else{
-            customer.name = name;
-            customer.email = email;
-            customer.updatedAt = new Date();
-            await this.customerRepository.save(customer);
-            res.status(200).send({ success: true, message: "Customer is updated!" });
+            if (customer == null) {
+                res.status(404).send({ success: false, message: "Customer not found!" })
+            } else {
+                customer.name = name;
+                customer.email = email;
+                customer.updatedAt = new Date();
+                await this.customerRepository.save(customer);
+                res.status(200).send({ success: true, message: "Customer is updated!" });
+            }
+        } catch (error) {
+            res.status(500).send({ success: false, message: "Update customer endpoint!" })
         }
+
     }
 
-    deleteCustomer = async (req:Request, res:Response) => {
-        const customer = await this.customerRepository.findOneBy({ id: parseInt(req.params.customerId) })
-        if (customer == null) {
-            res.status(404).send({ success:false, message: "Customer not found!"})
-        }else{
-            await this.customerRepository.delete(parseInt(req.params.customerId))
-            res.status(200).send({ success: true, message: "Customer is deleted!" });
+    deleteCustomer = async (req: Request, res: Response) => {
+        try {
+            const customer = await this.customerRepository.findOneBy({ id: parseInt(req.params.customerId) })
+            if (customer == null) {
+                res.status(404).send({ success: false, message: "Customer not found!" })
+            } else {
+                await this.customerRepository.delete(parseInt(req.params.customerId))
+                res.status(200).send({ success: true, message: "Customer is deleted!" });
+            }
+        } catch (error) {
+            res.status(500).send({ success: false, message: "Delete customer endpoint error!" })
         }
+
     }
 }

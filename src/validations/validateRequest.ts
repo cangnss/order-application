@@ -19,3 +19,13 @@ export const checkCustomerId = (req: Request, res: Response, next: NextFunction)
   }
   next();
 };
+
+export const checkAddressId = (req: Request, res: Response, next: NextFunction) => {
+  const { addressId } = req.params;
+  const convertedId = parseInt(addressId);
+  if (!addressId || isNaN(convertedId)) {
+    return res.status(400).json({ error: 'Invalid addressId' });
+  }
+  next();
+};
+
