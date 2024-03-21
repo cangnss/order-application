@@ -29,3 +29,13 @@ export const checkAddressId = (req: Request, res: Response, next: NextFunction) 
   next();
 };
 
+export const checkProductId = (req: Request, res: Response, next: NextFunction) => {
+  const { productId } = req.params;
+  const convertedId = parseInt(productId);
+  if (!productId || isNaN(convertedId)) {
+    return res.status(400).json({ error: 'Invalid productId' });
+  }
+  next();
+};
+
+

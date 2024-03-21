@@ -4,6 +4,7 @@ import { AppDataSource } from "./data-source";
 import bodyParser from "body-parser";
 import { customerRoutes } from "./routes/customerRoute";
 import { addressRoutes } from "./routes/addressRoute";
+import { productRoutes } from "./routes/productRoute";
 dotenv.config();
 
 const PORT = process.env.PORT || 8080
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use("/api/customer", customerRoutes);
 app.use("/api/address", addressRoutes)
+app.use("/api/products", productRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server is running http://localhost:${PORT}`)
