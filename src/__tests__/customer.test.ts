@@ -74,4 +74,22 @@ describe("customer", () => {
             expect(body.message).toBe("Customer is updated!")
         })
     })
+
+    describe("delete customer route", () => {
+        it("should return a 404", async () => {
+            const customerId = 1000
+            const { status, body } = await supertest(app).delete(`/api/customer/${customerId}`)
+            expect(status).toBe(404)
+            expect(body.success).toBe(false)
+            expect(body.message).toBe("Customer not found!")
+        })
+
+        it("should return a 200 and delete the customer", async () => {
+            const customerId = 12
+            const { status, body } = await supertest(app).delete(`/api/customer/${customerId}`)
+            expect(status).toBe(200)
+            expect(body.success).toBe(true)
+            expect(body.message).toBe("Customer is deleted!")
+        })
+    })
 })
