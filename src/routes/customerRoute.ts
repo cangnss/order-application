@@ -8,6 +8,7 @@ export const customerRoutes = Router();
 const customerControllers = new CustomerController();
 
 customerRoutes.get("/", customerControllers.getAllCustomers);
+customerRoutes.get("/:customerId", checkCustomerId, customerControllers.getCustomer);
 customerRoutes.post("/", validateRequest(createCustomerSchema), customerControllers.addCustomer);
 customerRoutes.put("/:customerId", checkCustomerId, validateRequest(updateCustomerSchema), customerControllers.updateCustomer);
 customerRoutes.delete("/:customerId", checkCustomerId, customerControllers.deleteCustomer);

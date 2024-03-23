@@ -1,11 +1,7 @@
-import express, { Express, Request, Response } from "express";
+import { Express } from "express";
 import dotenv from "dotenv";
 import { AppDataSource } from "./data-source";
-import bodyParser from "body-parser";
-import { customerRoutes } from "./routes/customerRoute";
-import { addressRoutes } from "./routes/addressRoute";
-import { productRoutes } from "./routes/productRoute";
-import { orderRoutes } from "./routes/orderRoute";
+import createServer from "./utils/server";
 dotenv.config();
 
 const PORT = process.env.PORT || 8080
@@ -19,14 +15,7 @@ AppDataSource
         console.log("error data source", err);
     })
 
-const app: Express = express();
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-app.use("/api/customer", customerRoutes);
-app.use("/api/address", addressRoutes)
-app.use("/api/products", productRoutes)
-app.use("/api/orders", orderRoutes)
+const app: Express = createServer();
 
 app.listen(PORT, () => {
     console.log(`Server is running http://localhost:${PORT}`)
