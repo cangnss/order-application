@@ -15,6 +15,20 @@ export class CustomerController {
         }
     }
 
+    getCustomer = async (req: Request, res: Response) => {
+        try {
+            const customer = await this.customerRepository.findOneBy({ id: parseInt(req.params.customerId) })
+            if (customer == null) {
+                res.status(404).send({ success: false, message: "Customer not found!" })
+            }else{
+                res.status(200).send({ success: true, data: customer })
+            }
+        } catch (error) {
+            console.log("Get Customer Error: ", error)
+            return res.status(500).send({ success: false, message: "Get Customer Error!" })
+        }
+    }
+
     addCustomer = async (req: Request, res: Response) => {
         try {
             const { name, email } = await req.body;
