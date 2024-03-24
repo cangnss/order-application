@@ -93,9 +93,7 @@ describe("address", () => {
         })
 
         it("should return a 200 and delete the address", async () => {
-            let addressId = 7
-            // const { pStatus, pBody }:any = await supertest(app).post("/api/address").send(address);
-            // addressId = pBody.id;
+            let addressId = 10
             const { status, body } = await supertest(app).delete(`/api/address/${addressId}`)
             expect(status).toBe(200)
             expect(body.success).toBe(true)

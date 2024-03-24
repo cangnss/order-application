@@ -14,6 +14,20 @@ export class ProductController{
             res.status(500).send({ status: false, message: "Get All Product Error!"})
         }
     }
+
+    getProduct = async (req:Request, res:Response) => {
+        try {
+            const product = await this.productRepository.findOneBy({ id: parseInt(req.params.productId) });
+            if (product == null) {
+                return res.status(404).send({ success: false, message: "Product not found!" })
+            }else{
+                return res.status(200).send({ success: true, data: product })
+            }
+        } catch (error) {
+            console.log("Get All Product error", error);
+            res.status(500).send({ success: false, message: "Get All Product Error!"})
+        }
+    }
     
     addProduct = async (req:Request, res:Response) => {
         try {
@@ -22,10 +36,10 @@ export class ProductController{
             product.imageUrl = imageUrl;
             product.name = name;
             await this.productRepository.save(product);
-            res.status(201).send({ status: true, message: "Product is added!" })
+            res.status(201).send({ success: true, message: "Product is added!" })
         } catch (error) {
             console.log("Add Product error", error);
-            res.status(500).send({ status: false, message: "Add Product error"})
+            res.status(500).send({ success: false, message: "Add Product error"})
         }
     }
 
@@ -34,7 +48,7 @@ export class ProductController{
             const { imageUrl, name } = req.body
             const product = await this.productRepository.findOneBy({ id: parseInt(req.params.productId) })
             if (product == null) {
-                res.status(404).send({ status: false, message: "Product not found!" })
+                res.status(404).send({ success: false, message: "Product not found!" })
             }else{
                 product.imageUrl = imageUrl;
                 product.name = name;
@@ -43,7 +57,7 @@ export class ProductController{
             }
         } catch (error) {
             console.log("Update Product error", error);
-            res.status(500).send({ status: false, message: "Update Product error"})
+            res.status(500).send({ success: false, message: "Update Product error"})
         }
     }
 
