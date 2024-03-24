@@ -1,0 +1,24 @@
+{
+  meta: {
+    req: {
+      url: '/api/customer/asdasdsa',
+      headers: {
+        'user-agent': 'PostmanRuntime/7.37.0',
+        accept: '*/*',
+        'postman-token': '66f7940c-4faa-420b-93b8-5919d23d9b4f',
+        host: 'localhost:3005',
+        'accept-encoding': 'gzip, deflate, br',
+        connection: 'keep-alive'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/api/customer/asdasdsa',
+      query: {}
+    },
+    res: { statusCode: 400 },
+    responseTime: 1
+  },
+  level: 'warn',
+  message: 'HTTP GET /api/customer/asdasdsa',
+  timestamp: '2024-03-24T14:07:30.394Z'
+}
