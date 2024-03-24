@@ -16,6 +16,19 @@ export class AddressController {
         }
     }
 
+    getAddress = async (req: Request, res: Response) => {
+        try {
+            const address = await this.addressRepository.findOneBy({ id: parseInt(req.params.addressId) })
+            if (address == null) {
+                return res.status(404).send({ success: false, message: "Address not found!" })
+            }
+            return res.status(200).send({ success: true, data: address })
+        } catch (error) {
+            console.log("Get Address Error: ", error)
+            return res.status(500).send({ success: false, message: "Get Address Error!" })
+        }
+    }
+
     addAddress = async (req: Request, res: Response) => {
         try {
             const { addressLine, city, country, cityCode, customer_id } = req.body;
@@ -29,7 +42,7 @@ export class AddressController {
 
             await this.addressRepository.save(newAddress);
 
-            return res.status(200).send({ success: true, message: "Address is added!" });
+            return res.status(201).send({ success: true, message: "Address is added!" });
         } catch (error) {
             console.log("Add Address Error: ", error);
             return res.status(500).send({ success: false, message: "Failed to add address" });
