@@ -8,6 +8,7 @@ export const productRoutes = Router();
 const productController = new ProductController();
 
 productRoutes.get("/", productController.getAllProducts);
+productRoutes.get("/:productId", checkProductId, productController.getProduct);
 productRoutes.post("/", validateRequest(createProductSchema), productController.addProduct);
 productRoutes.put("/:productId", checkProductId, validateRequest(createProductSchema), productController.updateProduct);
 productRoutes.delete("/:productId", checkProductId, productController.deleteProduct);
