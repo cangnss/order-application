@@ -85,7 +85,7 @@ describe("product", () => {
         })
 
         it("should return a 200 and delete the product", async () => {
-            let productId = 6
+            let productId = 10
             const { status, body } = await supertest(app).delete(`/api/products/${productId}`)
             expect(status).toBe(200)
             expect(body.success).toBe(true)
