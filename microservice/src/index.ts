@@ -1,4 +1,5 @@
 import amqp from "amqplib"
+import sendLogByEmail from "./utils/mailSender";
 
 async function consumeMessages() {
     console.log("calisti");
@@ -12,8 +13,13 @@ async function consumeMessages() {
     await channel.bindQueue(q.queue, "logExchange", "Info");
 
     channel.consume(q.queue, (message: any) => {
+        let mailMessage: string = "";
         const data = JSON.parse(message?.content);
         console.log(data)
+        data.message.forEach((order: any) => {
+            mailMessage += `Quantity: ${order.quantity} Price: ${order.price} Status: ${order.status} Created Date: ${order.createdAt}\n`
+        })
+        sendLogByEmail(mailMessage)
         channel.ack(message);
     })
 }
