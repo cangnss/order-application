@@ -88,4 +88,13 @@ export class OrderController{
             res.status(500).send({ success: false, message: "Delete order error!" })
         }
     }
+
+    getOrdersForCron = async () => {
+        try {
+            const orders = await this.orderRepository.find();
+            await this.producer.publishMessage("Info", orders)
+        } catch (error) {
+            console.log("delete error!", error)
+        }
+    }
 }

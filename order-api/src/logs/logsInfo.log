@@ -406,3 +406,29 @@
   message: 'HTTP GET /api/orders',
   timestamp: '2024-03-25T18:46:19.125Z'
 }
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        'content-type': 'application/json',
+        'user-agent': 'PostmanRuntime/7.37.0',
+        accept: '*/*',
+        'postman-token': '16d9dafb-4809-440a-a05d-e5dce6ec75c0',
+        host: 'localhost:3005',
+        'accept-encoding': 'gzip, deflate, br',
+        connection: 'keep-alive',
+        'content-length': '135'
+      },
+      method: 'POST',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 201 },
+    responseTime: 64
+  },
+  level: 'info',
+  message: 'HTTP POST /api/orders',
+  timestamp: '2024-03-25T20:03:42.528Z'
+}
