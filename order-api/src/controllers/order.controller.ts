@@ -10,13 +10,7 @@ export class OrderController{
 
     getAllOrders = async (req:Request, res:Response) => {
         try {
-            let mailMessage = "";
-            let obj = {};
             const orders = await this.orderRepository.find();
-            orders.forEach((order:Order) => {
-                mailMessage += `Quantity: ${order.quantity} Price: ${order.price} Status: ${order.status} Created Date: ${order.createdAt}\n`
-            })
-            sendLogByEmail(mailMessage)
             await this.producer.publishMessage("Info", orders)
             res.status(200).send({ success: true, data: orders })
         } catch (error) {

@@ -358,3 +358,51 @@
   message: 'HTTP GET /api/orders',
   timestamp: '2024-03-24T23:54:08.066Z'
 }
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        'user-agent': 'PostmanRuntime/7.37.0',
+        accept: '*/*',
+        'postman-token': '3960b367-ca88-48d8-8bc1-3f5373f71f08',
+        host: 'localhost:3005',
+        'accept-encoding': 'gzip, deflate, br',
+        connection: 'keep-alive'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 200 },
+    responseTime: 98
+  },
+  level: 'info',
+  message: 'HTTP GET /api/orders',
+  timestamp: '2024-03-25T18:45:14.177Z'
+}
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        'user-agent': 'PostmanRuntime/7.37.0',
+        accept: '*/*',
+        'postman-token': '75a397b6-b490-412e-a3fa-aa88b025b418',
+        host: 'localhost:3005',
+        'accept-encoding': 'gzip, deflate, br',
+        connection: 'keep-alive'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 200 },
+    responseTime: 36
+  },
+  level: 'info',
+  message: 'HTTP GET /api/orders',
+  timestamp: '2024-03-25T18:46:19.125Z'
+}
