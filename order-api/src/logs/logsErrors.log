@@ -1,0 +1,24 @@
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        connection: 'close',
+        'accept-encoding': 'gzip, deflate, br',
+        host: 'localhost:3000',
+        'postman-token': 'f832dcd3-bf8b-4998-9def-5219e554412a',
+        accept: '*/*',
+        'user-agent': 'PostmanRuntime/7.37.0'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 500 },
+    responseTime: 46
+  },
+  level: 'error',
+  message: 'HTTP GET /api/orders',
+  timestamp: '2024-03-26T08:04:57.810Z'
+}

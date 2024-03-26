@@ -1,3 +1,4 @@
 /microservice/node_modules
 /order-api/node_modules
+/api-gateway/node_modules
 .env
