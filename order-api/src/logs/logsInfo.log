@@ -432,3 +432,151 @@
   message: 'HTTP POST /api/orders',
   timestamp: '2024-03-25T20:03:42.528Z'
 }
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        connection: 'close',
+        'accept-encoding': 'gzip, deflate, br',
+        host: 'localhost:3000',
+        'postman-token': 'f832dcd3-bf8b-4998-9def-5219e554412a',
+        accept: '*/*',
+        'user-agent': 'PostmanRuntime/7.37.0'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 500 },
+    responseTime: 46
+  },
+  level: 'error',
+  message: 'HTTP GET /api/orders',
+  timestamp: '2024-03-26T08:04:57.810Z'
+}
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        connection: 'close',
+        'accept-encoding': 'gzip, deflate, br',
+        host: 'localhost:3000',
+        'postman-token': 'c7a3f2f3-8804-430a-b0af-86c032b38a95',
+        accept: '*/*',
+        'user-agent': 'PostmanRuntime/7.37.0'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 200 },
+    responseTime: 92
+  },
+  level: 'info',
+  message: 'HTTP GET /api/orders',
+  timestamp: '2024-03-26T08:06:36.215Z'
+}
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        'content-length': '135',
+        connection: 'close',
+        'accept-encoding': 'gzip, deflate, br',
+        host: 'localhost:3000',
+        'postman-token': '71af9e7e-df41-4f40-b501-9a43dbfd5562',
+        accept: '*/*',
+        'user-agent': 'PostmanRuntime/7.37.0',
+        'content-type': 'application/json'
+      },
+      method: 'POST',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 201 },
+    responseTime: 54
+  },
+  level: 'info',
+  message: 'HTTP POST /api/orders',
+  timestamp: '2024-03-26T08:07:20.208Z'
+}
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        'content-length': '140',
+        connection: 'close',
+        'accept-encoding': 'gzip, deflate, br',
+        host: 'localhost:3000',
+        'postman-token': '24752899-1df5-4f68-a1c9-07697c14a263',
+        accept: '*/*',
+        'user-agent': 'PostmanRuntime/7.37.0',
+        'content-type': 'application/json'
+      },
+      method: 'POST',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 201 },
+    responseTime: 37
+  },
+  level: 'info',
+  message: 'HTTP POST /api/orders',
+  timestamp: '2024-03-26T08:08:15.759Z'
+}
+{
+  meta: {
+    req: {
+      url: '/customer',
+      headers: {
+        connection: 'close',
+        'accept-encoding': 'gzip, deflate, br',
+        host: 'localhost:3000',
+        'postman-token': '5c1e8f66-af2d-4e86-b22e-136cef099b65',
+        accept: '*/*',
+        'user-agent': 'PostmanRuntime/7.37.0'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/customer',
+      query: {}
+    },
+    res: { statusCode: 404 },
+    responseTime: 1
+  },
+  level: 'warn',
+  message: 'HTTP GET /customer',
+  timestamp: '2024-03-26T08:08:50.119Z'
+}
+{
+  meta: {
+    req: {
+      url: '/api/customer',
+      headers: {
+        connection: 'close',
+        'accept-encoding': 'gzip, deflate, br',
+        host: 'localhost:3000',
+        'postman-token': '925bf84f-4014-4c5b-96f7-4fd7064de435',
+        accept: '*/*',
+        'user-agent': 'PostmanRuntime/7.37.0'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/api/customer',
+      query: {}
+    },
+    res: { statusCode: 200 },
+    responseTime: 33
+  },
+  level: 'info',
+  message: 'HTTP GET /api/customer',
+  timestamp: '2024-03-26T08:08:58.535Z'
+}
