@@ -8,7 +8,7 @@ const PORT = process.env.PORT;
 const app = express();
 
 app.use("/order-service", createProxyMiddleware({
-    target: "http://localhost:3005",
+    target: process.env.SERVICE_URL,
     pathRewrite:{
         "^/order-service": ''
     }

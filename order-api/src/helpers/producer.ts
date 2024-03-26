@@ -1,10 +1,14 @@
 import amqp from "amqplib"
+import dotenv from "dotenv"
+dotenv.config();
 
 export class Producer {
     channel:any;
-
+    connectionString:string;
     async createChannel(){
-        const connection = await amqp.connect("amqp://localhost")
+        this.connectionString = process.env.PRODUCER_URL || "amqp://rabbitmq:5672"
+        const connection = await amqp.connect(this.connectionString, "heartbeat=60")
+        // const connection = await amqp.connect("amqp://localhost", "heartbeat=60")
         this.channel = await connection.createChannel();
     }
 

@@ -17,9 +17,9 @@ async function sendLogByEmail(log: any) {
 
         await transporter.sendMail({
             from: process.env.MAIL_ADDRESS,
-            to: 'cgunes52@gmail.com', // Alıcının e-posta adresi
-            subject: 'Order Log', // E-posta konusu
-            text: log // E-posta içeriği
+            to: process.env.TARGET_ADDRESS,
+            subject: 'Order Log',
+            text: log 
         });
 
         console.log('Log sent via email');
