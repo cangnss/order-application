@@ -580,3 +580,27 @@
   message: 'HTTP GET /api/customer',
   timestamp: '2024-03-26T08:08:58.535Z'
 }
+{
+  meta: {
+    req: {
+      url: '/api/orders',
+      headers: {
+        'user-agent': 'PostmanRuntime/7.37.0',
+        accept: '*/*',
+        'postman-token': '0f3a2ebf-f8c2-44c7-9008-d585720dee3d',
+        host: 'localhost:3005',
+        'accept-encoding': 'gzip, deflate, br',
+        connection: 'keep-alive'
+      },
+      method: 'GET',
+      httpVersion: '1.1',
+      originalUrl: '/api/orders',
+      query: {}
+    },
+    res: { statusCode: 200 },
+    responseTime: 104
+  },
+  level: 'info',
+  message: 'HTTP GET /api/orders',
+  timestamp: '2024-03-26T21:24:10.824Z'
+}

@@ -1,9 +1,17 @@
 import amqp from "amqplib"
 import sendLogByEmail from "./utils/mailSender";
+import dotenv from "dotenv"
+dotenv.config();
 
 async function consumeMessages() {
-    console.log("calisti");
-    const connection = await amqp.connect("amqp://localhost");
+    console.log("calisti", process.env.SERVICE_URL);
+    let connectionString: string = "";
+    if (process.env.SERVICE_URL !== undefined) {
+        console.log("service url: ", process.env.SERVICE_URL)
+        connectionString = process.env.SERVICE_URL || "amqp://rabbitmq:5672"
+    }
+    const connection = await amqp.connect(connectionString, "heartbeat=60");
+    // const connection = await amqp.connect("amqp://localhost", "heartbeat=60");
     const channel = await connection.createChannel();
 
     await channel.assertExchange("logExchange", "direct");

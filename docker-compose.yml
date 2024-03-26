@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  order-api:
+    # build: ./order-api
+    image: order-api:0.0.3
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - MAIL_ADDRESS=gunesalican0652@gmail.com
+      - MAIL_PASSWORD=Can140521.
+      - MAIL_KEY=rdxkustlzphxolsb
+      - DB_HOST=postgresql
+      - DB_USERNAME=user
+      - DB_PASSWORD=password
+      - DB_NAME=orderapp-db
+      - PRODUCER_URL=amqp://rabbitmq:5672
+    depends_on:
+      - postgresql
+      - rabbitmq
+
+  microservice:
+    # build: ./microservice:0.0.1
+    image: microservice:0.0.3
+    ports:
+      - "3001:3001"
+    environment:
+      - SERVICE_URL=amqp://rabbitmq:5672
+      - TARGET_ADDRESS=cgunes52@gmail.com
+      - MAIL_ADDRESS=gunesalican0652@gmail.com
+      - MAIL_PASSWORD=TestOrderApp.
+      - MAIL_KEY=rdxkustlzphxolsb
+    depends_on:
+      - rabbitmq
+      - order-api
+  
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - SERVICE_URL=http://order-api:3005/
+    depends_on:
+      - order-api
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    hostname: rabbitmq
+    ports:
+        - 5672:5672
+        - 15673:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
+  postgresql:
+    image: postgres:latest
+    hostname: postgresql
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_DB: orderapp-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+
+volumes:
+  rabbitmq_data:
+    driver: local
+  postgresql_data:
+    driver: local
