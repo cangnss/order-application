@@ -6,28 +6,50 @@ import { Address } from "../entity/address";
 
 const app: Express = createServer();
 
-const address = {
-    addressLine: "Test Address",
-    city: "Test",
-    country: "Turkey",
-    cityCode: "00",
-    customer_id: 1
+type AddressDto = {
+    addressLine: string;
+    city: string;
+    country: string;
+    cityCode: string;
+    customer_id: number;
 }
 
-const updateAddress = {
-    addressLine: "Update Test Address",
-    city: "Update Test",
-    country: "Turkey",
-    cityCode: "00",
-    customer_id: 1
+const customer = {
+    name: "ali can",
+    email: "can@gmail.com"
 }
 
 
 describe("address", () => {
+    let createdAddressId: number;
+    let createdAddress: AddressDto;
+    let updateAddress: AddressDto;
+    let createdCustomerId: number;
 
     beforeAll(async () => {
         await AppDataSource.initialize()
         await AppDataSource.getRepository(Address);
+        const customerResponse = await supertest(app).post("/api/customer").send(customer);
+        createdCustomerId = customerResponse.body.data.id
+        createdAddress = {
+            addressLine: "Test Address",
+            city: "Test",
+            country: "Turkey",
+            cityCode: "00",
+            customer_id: createdCustomerId
+        }
+        const { status, body } = await supertest(app).post("/api/address").send(createdAddress);
+        if (status == 201 && customerResponse.status == 201) {
+            createdAddressId = body.data.id;
+            updateAddress = {
+                addressLine: "Update Test Address",
+                city: "Update Test",
+                country: "Turkey",
+                cityCode: "00",
+                customer_id: createdCustomerId
+            }
+        }
+        
     })
 
     describe("get all address", () => {
@@ -42,23 +64,22 @@ describe("address", () => {
                 const addressId = 1000
                 await supertest(app).get(`/api/address/${addressId}`).expect(404)
             });
-            
+
             it("should return a 200 status and the address", async () => {
-                const addressId = 1
-                const { status, body } = await supertest(app).get(`/api/address/${addressId}`)
+                const { status, body } = await supertest(app).get(`/api/address/${createdAddressId}`)
                 expect(status).toBe(200)
                 expect(body.success).toBe(true)
-                expect(body.data.addressLine).toBe("Zafertepe mah. dervis özdemir cad.")
-                expect(body.data.city).toBe("Ankara")
-                expect(body.data.country).toBe("Turkey")
-                expect(body.data.cityCode).toBe("06")
+                expect(body.data.addressLine).toBe(createdAddress.addressLine)
+                expect(body.data.city).toBe(createdAddress.city)
+                expect(body.data.country).toBe(createdAddress.country)
+                expect(body.data.cityCode).toBe(createdAddress.cityCode)
             })
         })
     })
 
     describe("create address route", () => {
         it("should return a 201 status and create the address", async () => {
-            const { status, body } = await supertest(app).post("/api/address").send(address);
+            const { status, body } = await supertest(app).post("/api/address").send(createdAddress);
             expect(status).toBe(201)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Address is added!")
@@ -75,8 +96,7 @@ describe("address", () => {
         })
 
         it("should return a 200", async () => {
-            const addressId = 2
-            const { status, body } = await supertest(app).put(`/api/address/${addressId}`).send(updateAddress);
+            const { status, body } = await supertest(app).put(`/api/address/${createdAddressId}`).send(updateAddress);
             expect(status).toBe(200)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Address is updated!")
@@ -93,8 +113,7 @@ describe("address", () => {
         })
 
         it("should return a 200 and delete the address", async () => {
-            let addressId = 15
-            const { status, body } = await supertest(app).delete(`/api/address/${addressId}`)
+            const { status, body } = await supertest(app).delete(`/api/address/${createdAddressId}`)
             expect(status).toBe(200)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Address is deleted!")

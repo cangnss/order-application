@@ -42,7 +42,7 @@ export class AddressController {
 
             await this.addressRepository.save(newAddress);
 
-            return res.status(201).send({ success: true, message: "Address is added!" });
+            return res.status(201).send({ success: true, message: "Address is added!", data: newAddress });
         } catch (error) {
             console.log("Add Address Error: ", error);
             return res.status(500).send({ success: false, message: "Failed to add address" });
