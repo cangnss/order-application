@@ -36,7 +36,7 @@ export class ProductController{
             product.imageUrl = imageUrl;
             product.name = name;
             await this.productRepository.save(product);
-            res.status(201).send({ success: true, message: "Product is added!" })
+            res.status(201).send({ success: true, message: "Product is added!", data: product })
         } catch (error) {
             console.log("Add Product error", error);
             res.status(500).send({ success: false, message: "Add Product error"})

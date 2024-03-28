@@ -3,15 +3,16 @@ import { AppDataSource } from "../data-source";
 import { Order } from "../entity/order";
 import sendLogByEmail from "../utils/mailSender";
 import { Producer } from "../helpers/producer";
+import { Product } from "../entity/product";
 
 export class OrderController{
     private orderRepository = AppDataSource.getRepository(Order);
+    private productRepository = AppDataSource.getRepository(Product);
     private producer = new Producer();
 
     getAllOrders = async (req:Request, res:Response) => {
         try {
             const orders = await this.orderRepository.find();
-            await this.producer.publishMessage("Info", orders)
             res.status(200).send({ success: true, data: orders })
         } catch (error) {
             console.log("Get All Orders Error: ", error)
@@ -45,7 +46,7 @@ export class OrderController{
             order.createdAt = new Date();
             order.updatedAt = new Date();
             await this.orderRepository.save(order);
-            res.status(201).send({ success: true, message: "Order is added!" })
+            return res.status(201).send({ success: true, message: "Order is added!", data: order })
         } catch (error) {
             console.log("Add orders error!", error);
             res.status(500).send({ success: false, message: "Add orders error!"})

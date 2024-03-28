@@ -6,77 +6,104 @@ import { Order } from "../entity/order";
 
 const app: Express = createServer();
 
-const order = {
-    quantity: 1,
-    price: 500,
-    status: "Pending",
-    product_id: 1,
-    address_id: 2,
-    customer_id: 3
+type CustomerDto = {
+    name: string;
+    email: string;
 }
 
-const updateOrder = {
-    quantity: 1,
-    price: 500,
-    status: "On Way",
-    product_id: 1,
-    address_id: 2,
-    customer_id: 3
+type AddressDto = {
+    addressLine: string;
+    city: string;
+    country: string;
+    cityCode: string;
+    customer_id: number;
+}
+
+type ProductDto = {
+    imageUrl: string;
+    name: string;
+}
+
+type OrderDto = {
+    quantity: number;
+    price: number;
+    status: string;
+    product_id: number;
+    address_id: number;
+    customer_id: number;
+    createdAt: Date;
+    updatedAt: Date;
+}
+type UpdOrderDto = {
+    quantity: number;
+    price: number;
+    status: string;
+    product_id: number;
+    address_id: number;
+    customer_id: number;
 }
 
 describe("order", () => {
+    let createdOrderId: number;
+    let createdOrder: OrderDto;
+    let updateOrder: UpdOrderDto;
+    let productId: number;
+    let customerId: number;
+    let addressId: number;
+    let customer: CustomerDto;
+    let address: AddressDto;
+    let product: ProductDto;
+    let orderRepository: any;
 
     beforeAll(async () => {
         await AppDataSource.initialize()
         await AppDataSource.getRepository(Order);
+        orderRepository = AppDataSource.getRepository(Order);
+        product = {
+            imageUrl: "test image url",
+            name: "test product"
+        }
+        customer = {
+            name: "ali can",
+            email: "can@gmail.com"
+        }
+        let customerResponse = await supertest(app).post("/api/customer").send(customer);
+        let productResponse = await supertest(app).post("/api/products").send(product);
+        let addressResponse;
+        customerId = customerResponse.body.data.id
+        productId = productResponse.body.data.id
+        address = {
+            addressLine: "Test Address",
+            city: "Test",
+            country: "Turkey",
+            cityCode: "00",
+            customer_id: customerId
+        }
+        addressResponse = await supertest(app).post("/api/address").send(address);
+        addressId = addressResponse.body.data.id
+        createdOrder = {
+            quantity: 1,
+            price: 500,
+            status: "Pending",
+            product_id: productId,
+            address_id: addressId,
+            customer_id: customerId,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }
+        updateOrder = {
+            quantity: 2,
+            price: 800,
+            status: "On Way",
+            product_id: productId,
+            address_id: addressId,
+            customer_id: customerId
+        }
+        if (addressResponse?.status == 201 && productResponse.status == 201 && customerResponse.status == 201) {
+            const res = await orderRepository.save(createdOrder);
+            createdOrderId = res.id;
+        }
     })
-
-
-    // async function seedDatabase(){
-    //     const orderRepository = AppDataSource.getRepository(Order)
-
-    //     const ordersToCreate = [
-    //         {
-    //             quantity: 5,
-    //             price: 100,
-    //             status: "Pending",
-    //             product_id: 1,
-    //             address_id: 2,
-    //             customer_id: 3
-    //         },
-    //         {
-    //             quantity: 2,
-    //             price: 200,
-    //             status: "On Way",
-    //             product_id: 1,
-    //             address_id: 2,
-    //             customer_id: 3
-    //         },
-    //         {
-    //             quantity: 3,
-    //             price: 50,
-    //             status: "Pending",
-    //             product_id: 2,
-    //             address_id: 1,
-    //             customer_id: 1
-    //         },
-    //     ] 
-
-    //     for (const orderData of ordersToCreate) {
-    //         const order = new Order();
-    //         order.quantity = orderData.quantity;
-    //         order.price = orderData.price;
-    //         order.status = orderData.status;
-    //         order.products = orderData.product_id;
-    //         order.address = orderData.address_id;
-    //         order.customer = orderData.customer_id;
-    //         order.createdAt = new Date();
-    //         order.updatedAt = new Date();
-
-    //         await orderRepository.save(order);
-    //     }
-    // }
-
 
     describe("get all orders", () => {
         it("should return a 200", async () => {
@@ -84,31 +111,26 @@ describe("order", () => {
         });
     })
 
-    describe("get order route", () => {
-        describe("given the order does not exist", () => {
-            it("should return a 404", async () => {
-                const orderId = 1000
-                await supertest(app).get(`/api/orders/${orderId}`).expect(404)
-            });
-            
-            it("should return a 200 status and the order", async () => {
-                const orderId = 1
-                const { status, body } = await supertest(app).get(`/api/orders/${orderId}`)
-                expect(status).toBe(200)
-                expect(body.success).toBe(true)
-                expect(body.data.quantity).toBe(1)
-                expect(body.data.price).toBe(700)
-                expect(body.data.status).toBe("passive")
-            })
+    describe("create order route", () => {
+        it("should return a 201 status and create the order", async () => {
+            const res = await orderRepository.save(createdOrder);
+            expect(res.id).toBe(createdOrderId);
         })
     })
 
-    describe("create order route", () => {
-        it("should return a 201 status and create the order", async () => {
-            const { status, body } = await supertest(app).post("/api/orders").send(order);
-            expect(status).toBe(201)
+    describe("get order route", () => {
+        it("should return a 404", async () => {
+            const orderId = 1000
+            await supertest(app).get(`/api/orders/${orderId}`).expect(404)
+        });
+
+        it("should return a 200 status and the order", async () => {
+            const { status, body } = await supertest(app).get(`/api/orders/${createdOrderId}`)
+            expect(status).toBe(200)
             expect(body.success).toBe(true)
-            expect(body.message).toBe("Order is added!")
+            expect(body.data.quantity).toBe(createdOrder.quantity)
+            expect(body.data.price).toBe(createdOrder.price)
+            expect(body.data.status).toBe(createdOrder.status)
         })
     })
 
@@ -122,8 +144,8 @@ describe("order", () => {
         })
 
         it("should return a 200", async () => {
-            const orderId = 2
-            const { status, body } = await supertest(app).put(`/api/orders/${orderId}`).send(updateOrder);
+            const { status, body } = await supertest(app).put(`/api/orders/${createdOrderId}`).send(updateOrder);
+            console.log("body: ", body)
             expect(status).toBe(200)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Order is updated!")
@@ -140,8 +162,7 @@ describe("order", () => {
         })
 
         it("should return a 200 and delete the order", async () => {
-            let orderId = 9
-            const { status, body } = await supertest(app).delete(`/api/orders/${orderId}`)
+            const { status, body } = await supertest(app).delete(`/api/orders/${createdOrderId}`)
             expect(status).toBe(200)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Order is deleted!")

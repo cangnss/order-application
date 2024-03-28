@@ -24,7 +24,7 @@ export class Order {
     @Column()
     updatedAt!: Date
 
-    @ManyToOne(() => Order, order => order.products)
+    @ManyToOne(() => Product, product => product.orders)
     @JoinColumn({ name: "product_id" })
     products: Product;
 

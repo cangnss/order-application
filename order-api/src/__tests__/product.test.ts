@@ -6,6 +6,11 @@ import { Product } from "../entity/product";
 
 const app: Express = createServer();
 
+type ProductDto = {
+    id: number;
+    imageUrl: string;
+    name: string;
+}
 const product = {
     imageUrl: "test image url",
     name: "test product"
@@ -18,10 +23,20 @@ const updateProduct = {
 
 
 describe("product", () => {
-
+    let createdProductId: number;
+    let createdProduct: ProductDto;
     beforeAll(async () => {
         await AppDataSource.initialize()
         await AppDataSource.getRepository(Product);
+        const { status, body } = await supertest(app).post("/api/products").send(product);
+        if (status == 201) {
+            createdProductId = body.data.id;
+            createdProduct = {
+                id: body.data.id,
+                imageUrl:body.data.imageUrl,
+                name: body.data.name
+            }
+        }
     })
 
     describe("get all product", () => {
@@ -38,12 +53,11 @@ describe("product", () => {
             });
             
             it("should return a 200 status and the product", async () => {
-                const productId = 1
-                const { status, body } = await supertest(app).get(`/api/products/${productId}`)
+                const { status, body } = await supertest(app).get(`/api/products/${createdProductId}`)
                 expect(status).toBe(200)
                 expect(body.success).toBe(true)
-                expect(body.data.imageUrl).toBe("testurl")
-                expect(body.data.name).toBe("Mont")
+                expect(body.data.imageUrl).toBe(createdProduct.imageUrl)
+                expect(body.data.name).toBe(createdProduct.name)
             })
         })
     })
@@ -67,8 +81,7 @@ describe("product", () => {
         })
 
         it("should return a 200", async () => {
-            const productId = 2
-            const { status, body } = await supertest(app).put(`/api/products/${productId}`).send(updateProduct);
+            const { status, body } = await supertest(app).put(`/api/products/${createdProductId}`).send(updateProduct);
             expect(status).toBe(200)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Product is updated!")
@@ -85,8 +98,7 @@ describe("product", () => {
         })
 
         it("should return a 200 and delete the product", async () => {
-            let productId = 10
-            const { status, body } = await supertest(app).delete(`/api/products/${productId}`)
+            const { status, body } = await supertest(app).delete(`/api/products/${createdProductId}`)
             expect(status).toBe(200)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Product is deleted!")

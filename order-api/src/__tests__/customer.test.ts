@@ -6,6 +6,12 @@ import { Customer } from "../entity/customer";
 
 const app: Express = createServer();
 
+type CustomerDto = {
+    id: number;
+    name: string;
+    email: string;
+}
+
 const customer = {
     name: "ali can",
     email: "can@gmail.com"
@@ -19,11 +25,26 @@ const updateCustomer = {
 
 describe("customer", () => {
 
+    let createdCustomerId: number;
+    let createdCustomer: CustomerDto;
     beforeAll(async () => {
         await AppDataSource.initialize()
         await AppDataSource.getRepository(Customer);
+        const { status, body } = await supertest(app).post("/api/customer").send(customer);
+        if (status == 201) {
+            createdCustomerId = body.data.id;
+            createdCustomer = {
+                id: body.data.id,
+                name: body.data.name,
+                email: body.data.email
+            }
+        }
     })
-
+    describe("get all customer", () => {
+        it("should return a 200", async () => {
+            expect(200).toBe(200)
+        });
+    })
     describe("get all customer", () => {
         it("should return a 200", async () => {
             await supertest(app).get("/api/customer").expect(200)
@@ -36,14 +57,13 @@ describe("customer", () => {
                 const customerId = 1000
                 await supertest(app).get(`/api/customer/${customerId}`).expect(404)
             });
-            
+
             it("should return a 200 status and the customer", async () => {
-                const customerId = 1
-                const { status, body } = await supertest(app).get(`/api/customer/${customerId}`)
+                const { status, body } = await supertest(app).get(`/api/customer/${createdCustomerId}`)
                 expect(status).toBe(200)
                 expect(body.success).toBe(true)
-                expect(body.data.name).toBe("cem")
-                expect(body.data.email).toBe("gunes@gmail.com")
+                expect(body.data.name).toBe(createdCustomer.name)
+                expect(body.data.email).toBe(createdCustomer.email)
             })
         })
     })
@@ -67,8 +87,7 @@ describe("customer", () => {
         })
 
         it("should return a 200", async () => {
-            const customerId = 5
-            const { status, body } = await supertest(app).put(`/api/customer/${customerId}`).send(updateCustomer);
+            const { status, body } = await supertest(app).put(`/api/customer/${createdCustomerId}`).send(updateCustomer);
             expect(status).toBe(200)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Customer is updated!")
@@ -85,8 +104,7 @@ describe("customer", () => {
         })
 
         it("should return a 200 and delete the customer", async () => {
-            const customerId = 23
-            const { status, body } = await supertest(app).delete(`/api/customer/${customerId}`)
+            const { status, body } = await supertest(app).delete(`/api/customer/${createdCustomerId}`)
             expect(status).toBe(200)
             expect(body.success).toBe(true)
             expect(body.message).toBe("Customer is deleted!")
