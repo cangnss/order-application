@@ -9,7 +9,7 @@ services:
     environment:
       - PORT=3005
       - MAIL_ADDRESS=gunesalican0652@gmail.com
-      - MAIL_PASSWORD=Can140521.
+      - MAIL_PASSWORD=TestOrderApp.
       - MAIL_KEY=rdxkustlzphxolsb
       - DB_HOST=postgresql
       - DB_USERNAME=user
