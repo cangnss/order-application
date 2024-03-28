@@ -58,7 +58,10 @@ After clone if you want to view the data from the pgadmin interface after clonin
 Enter the order-api folder in terminal after that run ``` npm test ```. Results are showing in terminal.
 
 ### Logs
-Here you can find all endpoints in the system. Also, log records are located under the ```order-api/logs``` folder.
+Log records are located under the ```order-api/logs``` folder.
 
 ### RabbitMQ Logs
 Log records related to the order are also displayed in the RabbitMQ interface at ```http://localhost:15673``` port. You can access the interface by entering username ```guest``` and password ```guest```. These order log records are transmitted via e-mail. Emails can be sent by changing the ```TARGET_ADDRESS``` value in the Compose file.
+
+### Postman API Endpoints
+[Endpoints](https://github.com/cangnss/order-application/blob/main/OrderApplication.postman_collection.json)
